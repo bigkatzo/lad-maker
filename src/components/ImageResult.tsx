@@ -53,7 +53,7 @@ export const ImageResult: React.FC<ImageResultProps> = ({
           try {
             await navigator.share({
               title: 'My Lad Style Image from Lad Maker!',
-              text: 'Check out my Lad transformation! #lad-maker',
+              text: 'Check out my Lad transformation! $LAD',
               files: [file]
             });
           } catch (error) {
@@ -71,14 +71,14 @@ export const ImageResult: React.FC<ImageResultProps> = ({
         try {
           await navigator.share({
             title: 'My Lad Style Image from Lad Maker!',
-            text: 'Check out my Lad transformation! #lad-maker',
+            text: 'Check out my Lad transformation! $LAD',
             url: window.location.href
           });
         } catch (shareError) {
           console.log('Share failed:', shareError);
         }
       } else {
-        navigator.clipboard.writeText(window.location.href + ' #lad-maker');
+        navigator.clipboard.writeText(window.location.href + ' $LAD');
         alert('Link copied to clipboard!');
       }
     }
@@ -92,7 +92,7 @@ export const ImageResult: React.FC<ImageResultProps> = ({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    alert(`${format === 'portrait' ? 'Mobile' : 'Desktop'} screenshot saved! Share it with #lad-maker`);
+    alert(`${format === 'portrait' ? 'Mobile' : 'Desktop'} screenshot saved! Share it with $LAD`);
   };
 
   return (
@@ -175,7 +175,7 @@ export const ImageResult: React.FC<ImageResultProps> = ({
         {/* Top branding */}
         <div className="text-center">
           <p className="text-3xl font-southpark font-bold text-black mb-2">
-            #lad-maker
+            $LAD
           </p>
         </div>
 
@@ -206,7 +206,7 @@ export const ImageResult: React.FC<ImageResultProps> = ({
         {/* Bottom website URL */}
         <div className="text-center">
           <p className="text-lg font-southpark font-semibold text-gray-600">
-            www.lad-maker.com
+            ladmaker.xyz
           </p>
         </div>
       </div>
@@ -216,7 +216,7 @@ export const ImageResult: React.FC<ImageResultProps> = ({
         {/* Top branding */}
         <div className="text-center">
           <p className="text-4xl font-southpark font-bold text-black mb-2">
-            #lad-maker
+            $LAD
           </p>
         </div>
 
@@ -247,7 +247,7 @@ export const ImageResult: React.FC<ImageResultProps> = ({
         {/* Bottom website URL */}
         <div className="text-center">
           <p className="text-2xl font-southpark font-semibold text-gray-600">
-            www.lad-maker.com
+            ladmaker.xyz
           </p>
         </div>
       </div>
