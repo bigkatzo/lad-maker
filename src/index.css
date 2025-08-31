@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Chad/Lad Font - Using a bold, masculine font */
+@font-face {
+  font-family: 'LadFont';
+  src: url('/fonts/lad-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback to system fonts with bold weights for Chad aesthetic */
+body {
+  font-family: 'LadFont', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+}

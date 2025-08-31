@@ -1,0 +1,135 @@
+import React, { useCallback, useState, useEffect } from 'react';
+import { Upload, Image as ImageIcon, Clipboard } from 'lucide-react';
+
+interface ImageDropzoneProps {
+  onImageSelect: (file: File) => void;
+  disabled?: boolean;
+}
+
+export const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelect, disabled }) => {
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [showPasteHint, setShowPasteHint] = useState(false);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    if (!disabled) {
+      setIsDragOver(true);
+    }
+  }, [disabled]);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    
+    if (disabled) return;
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
+    
+    if (imageFile) {
+      onImageSelect(imageFile);
+    }
+  }, [onImageSelect, disabled]);
+
+  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onImageSelect(file);
+    }
+  }, [onImageSelect]);
+
+  const handlePaste = useCallback(async (e: ClipboardEvent) => {
+    if (disabled) return;
+
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    // Look for image items in clipboard
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) {
+          // Show brief feedback that paste worked
+          setShowPasteHint(true);
+          setTimeout(() => setShowPasteHint(false), 2000);
+          onImageSelect(file);
+        }
+        break;
+      }
+    }
+  }, [onImageSelect, disabled]);
+
+  // Add global paste event listener
+  useEffect(() => {
+    document.addEventListener('paste', handlePaste);
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
+  }, [handlePaste]);
+
+  return (
+    <div className="w-full max-w-2xl mx-auto">
+      <div
+        className={`
+          relative border-4 border-dashed rounded-3xl p-12 text-center transition-all duration-300 cursor-pointer
+          ${disabled 
+            ? 'border-gray-300 bg-gray-100 cursor-not-allowed' 
+            : isDragOver
+              ? 'border-gray-600 bg-gray-100 transform scale-105'
+              : 'border-black bg-gray-50 hover:bg-gray-100 hover:border-gray-800'
+          }
+        `}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => !disabled && document.getElementById('file-input')?.click()}
+      >
+        <input
+          id="file-input"
+          type="file"
+          accept="image/*"
+          onChange={handleFileInput}
+          className="hidden"
+          disabled={disabled}
+        />
+        
+        <div className="flex flex-col items-center space-y-4">
+          {showPasteHint ? (
+            <Clipboard className="w-16 h-16 text-green-500 animate-pulse" />
+          ) : isDragOver ? (
+            <Upload className="w-16 h-16 text-gray-700 animate-bounce" />
+          ) : (
+            <ImageIcon className="w-16 h-16 text-black" />
+          )}
+          
+          <div>
+            <h3 className="text-2xl font-southpark font-bold text-gray-800 mb-2">
+              {showPasteHint ? 'Image pasted!' : disabled ? 'Processing...' : 'Drop your virgin photo here!'}
+            </h3>
+            <p className="text-gray-600">
+              {showPasteHint 
+                ? 'Successfully pasted image from clipboard!'
+                : disabled 
+                  ? 'Please wait while we Lad-ify your image'
+                  : 'Drop files, click to browse, or paste (Ctrl+V / Cmd+V) an image from clipboard'
+              }
+            </p>
+          </div>
+          
+          {!disabled && (
+            <button className="bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-full border-4 border-gray-600 transform hover:scale-105 transition-all duration-200 shadow-lg">
+              Choose File
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
