@@ -253,7 +253,7 @@ function App() {
           <div className="flex justify-center items-center space-x-8 flex-wrap gap-4">
             {/* X (Twitter) */}
             <a
-              href="https://x.com/i/communities/1962817192149340493"
+              href="https://x.com/TopTierLad"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-black hover:bg-gray-900 text-white p-4 rounded-full border-4 border-gray-800 transform hover:scale-110 transition-all duration-200 shadow-lg"
